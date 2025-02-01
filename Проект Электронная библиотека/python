@@ -1,0 +1,75 @@
+from datetime import datetime
+from typing import List, Optional
+
+class WorkStation:
+    def __init__(self, name: str):
+        self.name = name
+        self.schedule = {}
+
+    def is_free(self, date: str) -> bool:
+        return date not in self.schedule
+
+    def assign_task(self, date: str, task):
+        if self.is_free(date):
+            self.schedule[date] = task
+            return True
+        return False
+
+    def __str__(self):
+        return self.name
+
+
+class ShiftTask:
+    def __init__(self, product_type: str, quantity: int, shift_date: str, workstation: WorkStation, description: Optional[str] = ""):
+        self.creation_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.product_type = product_type
+        self.quantity = quantity
+        self.shift_date = shift_date
+        self.workstation = workstation
+        self.description = description
+
+    def __str__(self):
+        return f"Задание на смену: {self.product_type}, Количество: {self.quantity}, Дата смены: {self.shift_date}, Участок: {self.workstation.name}"
+
+
+class ProductionService:
+    def __init__(self):
+        self.workstations = []
+        self.shift_tasks = []
+
+    def add_workstation(self, workstation: WorkStation):
+        self.workstations.append(workstation)
+
+    def get_free_workstations(self, date: str) -> List[WorkStation]:
+        return [ws for ws in self.workstations if ws.is_free(date)]
+
+    def register_shift_task(self, product_type: str, quantity: int, shift_date: str, workstation_name: str, description: Optional[str] = ""):
+        workstation = next((ws for ws in self.workstations if ws.name == workstation_name), None)
+        
+        if workstation and workstation.is_free(shift_date):
+            task = ShiftTask(product_type, quantity, shift_date, workstation, description)
+            workstation.assign_task(shift_date, task)
+            self.shift_tasks.append(task)
+            print(f"Задание на смену зарегистрировано: {task}")
+        else:
+            print("Ошибка: Рабочий участок занят или не найден.")
+
+
+# Пример использования
+if __name__ == "__main__":
+    production_service = ProductionService()
+
+    # Добавляем рабочие участки
+    production_service.add_workstation(WorkStation("Участок 1"))
+    production_service.add_workstation(WorkStation("Участок 2"))
+    production_service.add_workstation(WorkStation("Участок 3"))
+
+    # Проверяем свободные участки на конкретную смену
+    date_to_check = "2024-10-25"
+    free_workstations = production_service.get_free_workstations(date_to_check)
+    
+    print(f"Свободные участки на {date_to_check}: {[str(ws) for ws in free_workstations]}")
+
+    # Регистрация задания на смену
+    if free_workstations:
+        production_service.register_shift_task("Доски", 100, date_to_check, free_workstations[0].name, "Дополнительная информация о задании.")

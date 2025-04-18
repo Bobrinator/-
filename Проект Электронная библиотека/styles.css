@@ -1,5 +1,5 @@
 body {
-    font-family: 'Roboto', sans-serif; 
+    font-family: 'Roboto', sans-serif;
     background-color: #f9f9f9;
     color: #333333;
     margin: 0;
@@ -13,16 +13,24 @@ body {
 }
 
 header {
-    background: #1d6600; 
+    background: #1d6600;
     color: #ffffff;
     text-align: center;
     padding: 20px;
 }
 
+header input[type="text"] {
+    width: 80%;
+    padding: 10px;
+    margin-top: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
 header button {
     margin-top: 10px;
     padding: 10px 15px;
-    background-color: #4caf50; 
+    background-color: #4caf50;
     color: white;
     border: none;
     border-radius: 5px;
@@ -34,12 +42,8 @@ header button:hover {
     background-color: #45a049;
 }
 
-header input {
-    width: 80%;
-    padding: 10px;
-    margin-top: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+#add-book-form {
+    margin-top: 15px;
 }
 
 main {
@@ -61,7 +65,7 @@ li {
 }
 
 li:hover {
-    background: #3fa966; 
-    transform: scale(1.02); 
+    background: #3fa966;
+    transform: scale(1.02);
     cursor: pointer;
 }
